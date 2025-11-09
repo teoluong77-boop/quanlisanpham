@@ -1,0 +1,16 @@
+.my-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.my-table th,
+.my-table td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+
+/* Added by assistant: small styles for manage products */
+button{padding:6px 10px;border-radius:6px;border:1px solid #ccc;background:#f5f5f5;cursor:pointer}
+button:hover{background:#eee}
+input, textarea, select{padding:6px;border:1px solid #ddd;border-radius:6px}
