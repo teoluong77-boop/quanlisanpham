@@ -54,17 +54,16 @@ export default function App() {
                 {/* 2. Route Cha Layout */}
                 <Route path="/" element={<Layout />}> 
                     
-                    {/* Trang Chủ (Công khai) */}
-                    <Route index element={<Home />} /> 
+                    {/* 🚨 SỬA: Trang Chủ (index) giờ là Danh sách sản phẩm (ListProduct) */}
+                    <Route index element={<ListProduct />} /> 
                     
-                    {/* Trang Danh sách sản phẩm (Công khai) */}
+                    {/* Route ListProduct cũ, giữ lại để truy cập qua /ListProduct nếu cần */}
                     <Route path="ListProduct" element={<ListProduct />} /> 
 
-                    {/* Trang Chi tiết sản phẩm (Công khai) */}
+                    {/* Trang Chi tiết sản phẩm */}
                     <Route path="/dienthoai/:id" element={<Chitietsanpham />} /> 
                     
-                    {/*  BẢO VỆ ROUTE QUẢN LÝ SẢN PHẨM  */}
-                    {/* Route ManageProducts chỉ được truy cập nếu isAuthenticated là true */}
+                    {/* BẢO VỆ ROUTE QUẢN LÝ SẢN PHẨM */}
                     <Route 
                         path="ManageProducts" 
                         element={
