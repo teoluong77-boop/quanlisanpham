@@ -21,8 +21,16 @@ const MenuTop = () => {
         setCurrentUser({ username: 'Admin', role: 'admin' });
       } else if (user) {
         // Đã đăng nhập với vai trò Khách hàng
-        setIsLoggedIn(true);
-        setCurrentUser(JSON.parse(user));
+        try {
+          const parsedUser = JSON.parse(user);
+          setIsLoggedIn(true);
+          setCurrentUser(parsedUser);
+        } catch (e) {
+          // Xảy ra lỗi khi parse user, xóa key bị lỗi
+          localStorage.removeItem('currentUser');
+          setIsLoggedIn(false);
+          setCurrentUser(null);
+        }
       } else {
         // Chưa đăng nhập
         setIsLoggedIn(false);
