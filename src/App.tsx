@@ -19,6 +19,8 @@ import ManageProducts from "./ManageProducts.js";
 import Chitietsanpham from "./Chitietsanpham"; 
 // @ts-ignore
 import AdminLogin from "./AdminLogin"; 
+// @ts-ignore
+import UserAuth from "./UserAuth"; // <-- Đã import Component Đăng ký/Đăng nhập Khách hàng
 
 
 // Hàm kiểm tra trạng thái xác thực ban đầu từ Local Storage
@@ -26,20 +28,20 @@ const checkAuth = () => {
     return localStorage.getItem('isAuthenticated') === 'true';
 };
 
-// Component Bảo vệ Route (Chỉ cho phép truy cập nếu đã đăng nhập)
+// Component Bảo vệ Route (Chỉ cho phép truy cập nếu đã đăng nhập Admin)
 const ProtectedRoute = ({ isAuthenticated, children }) => {
     if (!isAuthenticated) {
-        // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập Admin
+        // Nếu chưa đăng nhập Admin, chuyển hướng đến trang đăng nhập Admin
         return <Navigate to="/admin-login" replace />; 
     }
     return children ? children : <Outlet />;
 };
 
 export default function App() {
-    // State để theo dõi trạng thái đăng nhập
+    // State để theo dõi trạng thái đăng nhập Admin (dùng cho ProtectedRoute)
     const [isAuthenticated, setIsAuthenticated] = useState(checkAuth());
     
-    // Hàm gọi khi đăng nhập thành công
+    // Hàm gọi khi đăng nhập Admin thành công
     const handleLogin = () => {
         setIsAuthenticated(true);
     };
@@ -48,16 +50,19 @@ export default function App() {
         <BrowserRouter>
             <Routes>
                 
-                {/* 1. Route Đăng nhập Admin (KHÔNG NẰM TRONG Layout) */}
+                {/* 1. Route Đăng nhập Admin (Toàn màn hình) */}
                 <Route path="/admin-login" element={<AdminLogin onLoginSuccess={handleLogin} />} />
                 
-                {/* 2. Route Cha Layout */}
+                {/* 🚨 2. Route Đăng ký/Đăng nhập Khách hàng (Toàn màn hình) */}
+                <Route path="/user-auth" element={<UserAuth />} />
+
+                {/* 3. Route Cha Layout */}
                 <Route path="/" element={<Layout />}> 
                     
-                    {/* 🚨 SỬA: Trang Chủ (index) giờ là Danh sách sản phẩm (ListProduct) */}
+                    {/* Trang Chủ */}
                     <Route index element={<ListProduct />} /> 
                     
-                    {/* Route ListProduct cũ, giữ lại để truy cập qua /ListProduct nếu cần */}
+                    {/* Trang Danh sách sản phẩm */}
                     <Route path="ListProduct" element={<ListProduct />} /> 
 
                     {/* Trang Chi tiết sản phẩm */}
@@ -73,7 +78,7 @@ export default function App() {
                         } 
                     />
 
-                    {/* Các Routes công khai khác, giữ nguyên */}
+                    {/* Các Routes khác giữ nguyên */}
                     <Route path="ListProducts_SP" element={<ListProducts_SP />} />
                     <Route path="Trang1" element={<Trang1 />} /> 
                     <Route path="Trang2" element={<Trang2 />} /> 
